@@ -47,8 +47,13 @@ export const DistributorList = () => {
                         return flower
                     })
 
+                    const uniqueFlowers = localFlowers.filter(lF => {
+                        const count = localFlowers.filter(lfx => lfx === lF).length
+                        if (count < 2) return lF
+                    })
+
                     const localRetailers = retailers.filter(r => r.distributorId === distributor.id)
-                    return <DistributorCard key={distributor.id} distributor={distributor} flowers={localFlowers} retailers={localRetailers} />
+                    return <DistributorCard key={distributor.id} distributor={distributor} flowers={uniqueFlowers} retailers={localRetailers} />
                 })
             }
         </section>

@@ -10,13 +10,13 @@ export const DistributorCard = ({ distributor, flowers, retailers }) => {
                 {
                     flowers.map(f => {
                         return (
-                            <p className="distributor__flower">{f.species} - {f.color} - ${(f.price * distributor.markup).toFixed(2)}</p>
+                            <p key={f.id} className="distributor__flower">{f.species} - {f.color} - ${(f.price * distributor.markup).toFixed(2)}</p>
                         )
                     })
                 }
                 <h4>Retailers:</h4>
                 {
-                    retailers.map(r => <p className="distributor__retailer">{r.name}</p>)
+                    retailers.map(r => <p key={r.id} className="distributor__retailer">{r.name}</p>)
                 }
             </div>
         </article>
