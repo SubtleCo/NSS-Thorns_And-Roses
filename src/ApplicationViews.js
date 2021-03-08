@@ -8,6 +8,7 @@ import { Home } from './components/Home'
 import { NurseryFlowersProvider } from './components/nurseries/NurseryFlowersProvider'
 import { NurseryList } from './components/nurseries/NurseryList'
 import { NurseryProvider } from './components/nurseries/NurseryProvider'
+import { RetailerList } from './components/retailers/RetailerList'
 import { RetailProvider } from './components/retailers/RetailerProvider'
 
 export const ApplicationViews = () => {
@@ -33,7 +34,7 @@ export const ApplicationViews = () => {
                                     </Route>
 
                                     <Route path="/retailers">
-                                        <h2>Retailers, amirite?</h2>
+                                        <RetailerList />
                                     </Route>
 
                                 </RetailProvider>
