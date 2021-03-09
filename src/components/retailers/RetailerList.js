@@ -1,13 +1,13 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
+import { DistributorNurseriesContext } from '../distributors/DistributorNurseriesProvider'
+import { DistributorContext } from '../distributors/DistributorProvider'
 import { FlowerContext } from '../flowers/FlowerProvider'
 import { NurseryFlowersContext } from '../nurseries/NurseryFlowersProvider'
 import { NurseryContext } from '../nurseries/NurseryProvider'
-import { RetailerContext } from '../retailers/RetailerProvider'
-import { DistributorCard } from './DistributorCard'
-import { DistributorNurseriesContext } from './DistributorNurseriesProvider'
-import { DistributorContext } from './DistributorProvider'
+import { RetailerCard } from './RetailerCard'
+import { RetailerContext } from './RetailerProvider'
 
-export const DistributorList = () => {
+export const RetailerList = () => {
     const { distributors, getDistributors } = useContext(DistributorContext)
     const { flowers, getFlowers } = useContext(FlowerContext)
     const { retailers, getRetailers } = useContext(RetailerContext)
@@ -17,17 +17,18 @@ export const DistributorList = () => {
 
     useEffect(() => {
         getFlowers()
-            .then(getRetailers)
+            .then(getDistributors)
             .then(getNurseries)
             .then(getNurseryFlowers)
             .then(getDistributorNurseries)
-            .then(getDistributors)
+            .then(getRetailers)
     }, [])
 
     return (
-        <section className="distributors">
+        <section className="retailers">
             {
-                distributors.map(distributor => {
+                retailers.map(r => {
+                    const distributor = distributors.find(d => d.id === r.distributorId)
                     const nurseryJoins = distributorNurseries.filter(dN => dN.distributorId === distributor.id)
                     const localNurseries = nurseryJoins.map(nJ => {
                         return nurseries.find(n => n.id === nJ.nurseryId)
@@ -51,12 +52,12 @@ export const DistributorList = () => {
                         const count = localFlowers.filter(lfx => lfx === lF).length
                         if (count < 2) return lF
                     })
-
-                    const localRetailers = retailers.filter(r => r.distributorId === distributor.id)
-                    return <DistributorCard key={distributor.id}
+                    return <RetailerCard
+                        key={r.id}
+                        retailer={r}
                         distributor={distributor}
                         flowers={uniqueFlowers}
-                        retailers={localRetailers} />
+                        nurseries={localNurseries} />
                 })
             }
         </section>
