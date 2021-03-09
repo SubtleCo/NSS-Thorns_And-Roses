@@ -53,7 +53,10 @@ export const DistributorList = () => {
                     })
 
                     const localRetailers = retailers.filter(r => r.distributorId === distributor.id)
-                    return <DistributorCard key={distributor.id} distributor={distributor} flowers={uniqueFlowers} retailers={localRetailers} />
+                    return <DistributorCard key={distributor.id}
+                        distributor={distributor}
+                        flowers={uniqueFlowers}
+                        retailers={localRetailers} />
                 })
             }
         </section>

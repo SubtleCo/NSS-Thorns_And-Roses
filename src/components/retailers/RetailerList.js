@@ -17,22 +17,47 @@ export const RetailerList = () => {
 
     useEffect(() => {
         getFlowers()
-            .then(getRetailers)
+            .then(getDistributors)
             .then(getNurseries)
             .then(getNurseryFlowers)
             .then(getDistributorNurseries)
-            .then(getDistributors)
+            .then(getRetailers)
     }, [])
 
     return (
         <section className="retailers">
             {
                 retailers.map(r => {
-                    const localDistributor = distributors.filter(d => d.id === r.distributorId)
+                    const distributor = distributors.find(d => d.id === r.distributorId)
+                    const nurseryJoins = distributorNurseries.filter(dN => dN.distributorId === distributor.id)
+                    const localNurseries = nurseryJoins.map(nJ => {
+                        return nurseries.find(n => n.id === nJ.nurseryId)
+                    })
+
+                    let flowerJoins = []
+                    localNurseries.forEach(nursery => {
+                        const relatedFlowerJoins = nurseryFlowers.filter(nF => nF.nurseryId === nursery.id)
+                        flowerJoins.push(relatedFlowerJoins)
+                    })
+                    flowerJoins = flowerJoins.flat()
+
+                    const localFlowers = flowerJoins.map(fJ => {
+                        const price = fJ.price
+                        const flower = flowers.find(f => f.id === fJ.flowerId)
+                        if (flower) flower.price = price
+                        return flower
+                    })
+
+                    const uniqueFlowers = localFlowers.filter(lF => {
+                        const count = localFlowers.filter(lfx => lfx === lF).length
+                        if (count < 2) return lF
+                    })
                     return <RetailerCard
                         key={r.id}
                         retailer={r}
-                        distributor={localDistributor} />
+                        distributor={distributor}
+                        flowers={uniqueFlowers}
+                        nurseries={localNurseries} />
                 })
             }
         </section>
